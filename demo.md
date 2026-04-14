@@ -1,58 +1,48 @@
 # Analise do notebook demo.ipynb
 
-Checklist executado para `demo.ipynb`.
+Checklist executado para `demo.ipynb` com base no estado atual do workspace.
 
 ## Resumo
 
 | # | Item | Status |
 |---|---|---|
 | 1 | Convencao de idioma | Reprovado |
-| 2 | Sem caminhos absolutos | Reprovado |
+| 2 | Caminhos do projeto sem hardcode | Aprovado com ressalva |
 | 3 | `.venv` no `.gitignore` | Aprovado |
-| 4 | `requirements.txt` atualizado | Reprovado |
+| 4 | `requirements.txt` atualizado | Aprovado |
+| 5 | Celulas com efeitos externos identificadas | Atencao |
+| 6 | Notebook com saidas de execucao | Atencao |
 
 ## 1. Convencao de idioma
 
 Status: Reprovado
 
-O notebook mistura comentarios e mensagens inline em portugues dentro de celulas de codigo, o que foge da regra do Mentor para manter o codigo em ingles.
+Pelas regras do Mentor, explicacoes podem ficar em PT-BR, mas codigo, identificadores, comentarios e mensagens emitidas por celulas de codigo devem preferencialmente ficar em ingles.
+
+No estado atual, o notebook ainda mistura ingles e portugues dentro de celulas de codigo.
 
 Ocorrencias principais:
-- Celula 8: comentario em portugues sobre o diretorio de trabalho do Colab.
-- Celula 10: comentarios em portugues sobre `gcloud`.
-- Celula 12: comentario em portugues sobre `lsb_release`.
-- Celula 14: comentarios em portugues sobre `apt`.
-- Celula 16: comentarios e mensagens ao usuario em portugues dentro da celula de codigo.
+- Celula 2: mensagens de `print` em portugues.
+- Celula 8: mensagem exibida ao usuario em portugues.
+- Outras celulas de codigo ja foram parcialmente ajustadas e estao melhores do que na versao anterior.
 
 Correcao sugerida:
-- Manter explicacoes em PT-BR nas celulas Markdown.
-- Traduzir comentarios de codigo para ingles.
-- Manter mensagens ao usuario em PT-BR apenas se isso for intencional e fizer parte da interface do notebook.
+- Manter o texto pedagogico em PT-BR nas celulas Markdown.
+- Traduzir mensagens e comentarios das celulas de codigo para ingles.
 
-## 2. Caminhos absolutos
+## 2. Caminhos do projeto sem hardcode
 
-Status: Reprovado
+Status: Aprovado com ressalva
 
-Ha caminhos absolutos hardcoded no notebook.
+O problema anterior com caminho absoluto do arquivo de imagem foi corrigido.
 
-Ocorrencias principais:
-- Celula 4: leitura de `/etc/os-release` via `subprocess`.
-- Celula 16: `image_path = '/content/MCMV.png'`.
-- Celula 16: comando `!ls -la /content/MCMV.png`.
+Estado atual:
+- A celula de imagem usa `Path("MCMV.png")`, o que e adequado para um arquivo do projeto.
+- Nao ha mais uso de `'/content/MCMV.png'` como caminho hardcoded do arquivo da imagem.
 
-Correcao sugerida:
-- Para arquivos do projeto, preferir `pathlib.Path`, `os.path.join()` ou caminhos relativos.
-- Para caminhos de sistema inevitaveis, encapsular o valor em uma variavel nomeada e validar existencia antes de usar.
-
-Exemplo:
-
-```python
-from pathlib import Path
-
-image_path = Path("MCMV.png")
-if image_path.exists():
-    img = Image.open(image_path)
-```
+Ressalva:
+- A leitura de `/etc/os-release` continua aparecendo em uma celula, mas isso e aceitavel neste notebook porque se trata de um caminho padrao de sistema Linux usado apenas para inspecao do ambiente.
+- As referencias a `/content` tambem sao coerentes com o contexto de Google Colab e nao configuram problema de caminho de arquivo do projeto.
 
 ## 3. .venv no .gitignore
 
@@ -65,16 +55,16 @@ O `.gitignore` do projeto contem as entradas essenciais:
 
 ## 4. requirements.txt atualizado
 
-Status: Reprovado
+Status: Aprovado
 
-O notebook usa bibliotecas externas e o projeto nao possui `requirements.txt`.
+O projeto possui `requirements.txt` e ele cobre as dependencias externas identificadas no notebook.
 
-Dependencias externas identificadas:
-- Celula 16: `from PIL import Image`
-- Celula 16: `from IPython.display import display`
-- Celula 21: `import pandas as pd`
+Dependencias encontradas no notebook:
+- `from PIL import Image`
+- `from IPython.display import display`
+- `import pandas as pd`
 
-Conteudo sugerido para `requirements.txt`:
+Dependencias registradas em `requirements.txt`:
 
 ```txt
 Pillow
@@ -82,14 +72,34 @@ ipython
 pandas
 ```
 
-Observacao:
-No Colab, algumas dessas bibliotecas podem ja estar instaladas, mas o repositorio deve documenta-las para manter a reprodutibilidade fora do ambiente hospedado.
+## 5. Celulas com efeitos externos identificadas
+
+Status: Atencao
+
+O notebook contem celulas que dependem de ambiente externo, rede, autenticacao ou privilegios elevados.
+
+Ocorrencias principais:
+- Celula 10: `gcloud config get-value account`
+- Celula 14: `sudo apt update` e `sudo apt install python3-pil -y`
+- Celula 18: `wget` para baixar imagem por URL
+
+Isso nao impede commit, mas reduz a reprodutibilidade imediata fora do Colab ou sem configuracao previa.
+
+## 6. Notebook com saidas de execucao
+
+Status: Atencao
+
+O notebook esta salvo com `outputs` e `execution_count` em varias celulas.
+
+Isso pode ser intencional para demonstracao, mas vale decidir antes do commit:
+- manter as saidas para preservar o contexto do demo;
+- ou limpar os outputs para reduzir ruido no diff do repositorio.
 
 ## Conclusao
 
-O notebook ainda nao esta pronto para commit segundo o checklist do Mentor.
+O notebook esta bem mais proximo de ficar pronto para commit do que a avaliacao anterior indicava.
 
-Correcoes pendentes:
-1. Traduzir comentarios de codigo para ingles.
-2. Remover ou encapsular caminhos absolutos hardcoded.
-3. Criar `requirements.txt` com as dependencias externas usadas no notebook.
+Pendencias reais no estado atual:
+1. Ajustar a convencao de idioma nas celulas de codigo.
+2. Decidir se as saidas do notebook devem permanecer versionadas.
+3. Manter consciencia de que algumas celulas dependem de Colab, rede, `gcloud` e `apt`.
