@@ -2,6 +2,10 @@
 
 Este repositório reúne exemplos de automação em Python e um notebook de demonstração para uso com VS Code + Colab.
 
+Para o proposito do curso do Google, voce tambem pode usar o Colab Web: https://colab.research.google.com.
+
+No Colab Web, a opcao **Mostrar terminal** no menu **Comandos** abre o mesmo ambiente de shell do notebook, onde voce pode executar comandos Linux.
+
 ## Estado atual do notebook demo
 
 - A análise mais recente está em `demo.md`.
