@@ -4,7 +4,9 @@ Este repositório reúne exemplos de automação em Python e um notebook de demo
 
 Para o proposito do curso do Google, voce tambem pode usar o Colab Web: https://colab.research.google.com.
 
-No Colab Web, a opcao **Mostrar terminal** no menu **Comandos** abre o mesmo ambiente de shell do notebook, onde voce pode executar comandos Linux.
+No Colab Web, abra o arquivo **Terminal_Linux.ipynb** e siga as instrucoes de como abrir o terminal:
+
+**Mostrar terminal** no menu **Comandos**, abre o ambiente de shell no notebook do Colab,  onde voce pode executar comandos Linux.
 
 ## Estado atual do notebook demo
 
