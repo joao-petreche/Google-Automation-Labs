@@ -7,7 +7,7 @@ Checklist executado para `demo.ipynb` com base no estado atual do workspace.
 | # | Item                        | Status |
 |---|-----------------------------|--------|
 | 1 | Convencao de idioma         | Aprovado |
-| 2 | Sem caminhos absolutos      | Atencao |
+| 2 | Sem caminhos absolutos      | Aprovado |
 | 3 | .venv no .gitignore         | Aprovado |
 | 4 | requirements.txt atualizado | Aprovado |
 
@@ -27,22 +27,14 @@ Exemplos de identificadores em ingles:
 
 ## 2. Sem caminhos absolutos
 
-Status: Atencao
+Status: Aprovado
 
-Foi encontrado caminho absoluto de sistema Linux no codigo:
+A celula foi ajustada para remover o caminho absoluto `/etc/os-release` do codigo.
 
-```python
-result = subprocess.run(['cat', '/etc/os-release'],
-						capture_output=True,
-						text=True,
-						check=True)
-```
-
-Esse uso pode ser aceitavel no contexto didatico (inspecao de ambiente Linux), mas pelo criterio estrito do checklist fica como atencao.
-
-Correcao sugerida:
-- Isolar o caminho em constante explicita (ex.: `OS_RELEASE_PATH = '/etc/os-release'`).
-- Manter o trecho condicionado a Linux, com fallback para `platform` quando aplicavel.
+Abordagem aplicada:
+- Uso de `platform.freedesktop_os_release()` para obter os metadados da distribuicao Linux via biblioteca padrao.
+- Fallback para `platform.platform()` quando os dados especificos da distribuicao nao estiverem disponiveis.
+- Comportamento multiplataforma mantido: em Windows ou macOS, a celula exibe informacoes gerais do sistema sem executar logica exclusiva de Linux.
 
 ## 3. .venv no .gitignore
 
@@ -72,7 +64,4 @@ pandas
 
 ## Conclusao
 
-O notebook esta praticamente pronto para commit e push.
-
-Pendencia atual:
-1. Tratar ou justificar formalmente o uso de `/etc/os-release` para fechar o item 2 como aprovado sem ressalvas.
+O notebook esta pronto para commit e push segundo os criterios deste checklist.
