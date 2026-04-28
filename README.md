@@ -20,12 +20,15 @@ No Colab Web, abra o arquivo **Terminal_Linux.ipynb** e siga as instrucoes de co
 ## Estrutura principal
 
 - `demo.ipynb`: notebook de demonstração (Colab).
+- `Terminal_Linux.ipynb`: notebook dedicado ao terminal Linux no Colab, incluindo guia de persistência de virtualenv entre sessões.
 - `demo.md`: anotações/avaliação do notebook.
-- `hello_world.py`: script simples de exemplo.
+- `hello_world.py`: script de exemplo com tratamento de erros de I/O (`OSError`).
 - `system_health_check.py`: script de verificação básica de saúde de diretório/disco.
 - `requirements.txt`: dependências Python do projeto.
 - `setup.ps1`: preparação do ambiente Python no Windows (PowerShell).
 - `setup_and_edit.sh`: preparação de editor e edição de arquivo em Linux (bash + apt).
+- `automation_test/`: diretório de testes de automação; contém subpasta `logs/`.
+- `imagem_baixada.jpg`: artefato gerado pela execução do notebook (download de imagem).
 
 ## Scripts de setup: onde, quando e para que usar
 
