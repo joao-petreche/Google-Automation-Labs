@@ -1,123 +1,117 @@
 # Google Automation Labs
 
-Este repositório reúne exemplos de automação em Python e um notebook de demonstração para uso com VS Code + Colab.
+Repositório de exemplos práticos de Python multiplataforma, criado para acompanhar o curso **Using Python to Interact with the Operating System** (Google/Coursera).
 
-Para o proposito do curso do Google, voce tambem pode usar o Colab Web: https://colab.research.google.com.
+O material foi desenvolvido para rodar tanto no **Google Colab** (via extensão do VS Code ou pelo Colab Web) quanto em ambientes locais **Windows** e **Linux/WSL**.
 
-No Colab Web, abra o arquivo **Terminal_Linux.ipynb** e siga as instrucoes de como abrir o terminal:
+---
 
-**Mostrar terminal** no menu **Comandos**, abre o ambiente de shell no notebook do Colab,  onde voce pode executar comandos Linux.
+## Notebooks
 
-## Estado atual do notebook demo
+### `demo.ipynb`
 
-- A análise mais recente está em `demo.md`.
-- Situação resumida do `demo.ipynb`:
-	- Convenção de idioma: aprovado.
-	- `.venv` no `.gitignore`: aprovado.
-	- `requirements.txt`: aprovado.
-	- Caminhos absolutos: atenção por uso didático de `/etc/os-release`.
+Guia demonstrativo de desenvolvimento multiplataforma. Cobre:
 
-## Estrutura principal
+1. **Autenticação no Colab** — autenticação OAuth via `google.colab.auth`, com exibição da conta autenticada.
+2. **Exploração do ambiente Linux** — versão do kernel e distribuição via módulo `platform`.
+3. **Manipulação de caminhos e arquivos** — criação de estrutura de diretórios com `os.makedirs` e `pathlib`.
+4. **Comandos de sistema multiplataforma** — comparação entre Python puro, Linux (`pwd`, `ls`) e Windows (`cd`, `dir`).
+5. **Informações do SO** — `platform` (universal), `lsb_release` (Linux) e `ver` (Windows).
+6. **Gerenciamento de pacotes** — `pip` (universal) vs. `apt-get` (Linux/Colab).
+7. **Transferência de arquivos VS Code ↔ Colab** — upload e download pela extensão Colab.
+8. **Exibição de imagens** — arquivo local (`Pillow` + `pathlib`) e download via URL (`urllib`).
+9. **Verificação do `pip`** — via `subprocess` e `sys.executable`, cross-platform.
+10. **DataFrames com pandas** — criação e exibição de tabelas com `pd.DataFrame`.
 
-- `demo.ipynb`: notebook de demonstração (Colab).
-- `Terminal_Linux.ipynb`: notebook dedicado ao terminal Linux no Colab, incluindo guia de persistência de virtualenv entre sessões.
-- `demo.md`: anotações/avaliação do notebook.
-- `hello_world.py`: script de exemplo com tratamento de erros de I/O (`OSError`).
-- `system_health_check.py`: script de verificação básica de saúde de diretório/disco.
-- `requirements.txt`: dependências Python do projeto.
-- `setup.ps1`: preparação do ambiente Python no Windows (PowerShell).
-- `setup_and_edit.sh`: preparação de editor e edição de arquivo em Linux (bash + apt).
-- `automation_test/`: diretório de testes de automação; contém subpasta `logs/`.
-- `imagem_baixada.jpg`: artefato gerado pela execução do notebook (download de imagem).
+### `Terminal_Linux.ipynb`
 
-## Scripts de setup: onde, quando e para que usar
+Notebook dedicado ao uso do terminal Linux no Colab. Inclui guia de persistência de `virtualenv` entre sessões.
 
-| Script | Onde executar | Quando executar | Para que serve |
-|---|---|---|---|
-| `setup.ps1` | Windows PowerShell, na raiz do projeto | Na primeira configuração local no Windows, ou quando quiser reinstalar dependências da `requirements.txt` | Cria `.venv` (se não existir) e instala dependências Python com `pip` |
-| `setup_and_edit.sh` | Linux/WSL com `bash` e `apt`, como root (`sudo`) | Quando precisar garantir que o editor `nano` esteja instalado e abrir rapidamente `hello_world.py` no terminal | Instala `nano` (se faltar), lista os arquivos da pasta e abre `hello_world.py` no `nano` |
+---
 
-### 1) setup.ps1 (Windows)
+## Scripts
 
-Use este script para preparar o ambiente Python local no Windows.
+| Arquivo | Onde executar | Para que serve |
+|---|---|---|
+| `setup.ps1` | Windows PowerShell, na raiz do projeto | Cria `.venv` (se não existir) e instala dependências de `requirements.txt` |
+| `setup_and_edit.sh` | Linux/WSL com `bash` e `apt`, como root | Instala `nano`, lista arquivos e abre `hello_world.py` no editor |
+| `hello_world.py` | Qualquer ambiente | Script de exemplo com tratamento de erros de I/O (`OSError`) |
+| `system_health_check.py` | VS Code local | Verificação básica de saúde de diretório e uso de disco |
 
-Comando (PowerShell):
+### `setup.ps1` (Windows)
 
 ```powershell
 ./setup.ps1
 ```
 
-O que ele faz:
-1. Verifica se a pasta `.venv` existe.
+1. Verifica se `.venv` existe.
 2. Cria o ambiente virtual se necessário.
-3. Instala as dependências de `requirements.txt` usando o `pip` da própria `.venv`.
+3. Instala as dependências de `requirements.txt` com o `pip` da própria `.venv`.
 
-## 2) setup_and_edit.sh (Linux/WSL)
-
-Use este script em sistemas Linux (ou WSL) quando quiser praticar edição de arquivos no terminal com `nano`, dentro da proposta pedagógica do curso.
-
-Comando:
+### `setup_and_edit.sh` (Linux/WSL)
 
 ```bash
 sudo ./setup_and_edit.sh
 ```
 
-O que ele faz:
-1. Exige execução como root (checagem de `id -u`).
-2. Instala `nano` com `apt` se o editor não estiver disponível.
+1. Exige execução como root.
+2. Instala `nano` via `apt` se não estiver disponível.
 3. Executa `ls -l` na pasta atual.
 4. Abre `hello_world.py` no `nano`.
 
-Contexto de aprendizado:
-- O uso do `nano` aqui é intencional para prática durante o curso **Using Python to Interact with the Operating System - Google** (Coursera: https://www.coursera.org/learn/python-operating-system).
+> O uso do `nano` é intencional para prática de edição via terminal, conforme proposta pedagógica do curso.
 
-## Upload to Colab: quais arquivos enviar
+---
 
-No `demo.ipynb`, os arquivos locais que devem ser enviados são:
+## Colab Web
 
-- **Obrigatório:** `hello_world.py` (teste de integração Colab no VS Code).
-- **Obrigatório:** `MCMV.png` (célula de imagem local).
+Para usar sem o VS Code, acesse [colab.research.google.com](https://colab.research.google.com), abra `Terminal_Linux.ipynb` e acesse o terminal pelo menu **Comandos > Mostrar terminal**.
 
-Sem `MCMV.png`, a célula informa que o arquivo não foi encontrado e não exibe a imagem local.
+---
 
-Arquivos opcionais no contexto do notebook:
+## Upload to Colab (VS Code)
 
-- `requirements.txt`: útil como referência de dependências do projeto (embora o Colab já traga vários pacotes pré-instalados).
-- `system_health_check.py`: opcional no Colab; a execução principal dele é no VS Code local.
+Antes de executar as células de imagem local e integração no `demo.ipynb`, envie os arquivos necessários:
 
-### Como fazer Upload to Colab no VS Code
+| Arquivo | Obrigatório | Célula correspondente |
+|---|---|---|
+| `hello_world.py` | Sim | Teste de integração Colab no VS Code |
+| `MCMV.png` | Sim | Exibição de imagem local |
+| `requirements.txt` | Não | Referência de dependências |
 
-Referencias oficiais da extensao:
-- Repositorio no GitHub: https://github.com/googlecolab/colab-vscode
-- User Guide: https://github.com/googlecolab/colab-vscode/wiki/User-Guide
+Como enviar:
 
-1. No Explorer do VS Code, clique com o botão direito no arquivo local.
+1. No Explorer do VS Code, clique com o botão direito no arquivo.
 2. Selecione **Upload to Colab**.
-3. Confirme no painel do Colab (`COLAB: CONTENTS`) se o arquivo apareceu.
+3. Confirme no painel `COLAB: CONTENTS` que o arquivo apareceu.
 4. Execute a célula correspondente no `demo.ipynb`.
+
+Referências da extensão: [GitHub](https://github.com/googlecolab/colab-vscode) · [User Guide](https://github.com/googlecolab/colab-vscode/wiki/User-Guide)
+
+---
 
 ## Fluxo recomendado
 
 1. **Windows local:** execute `setup.ps1` para preparar a `.venv`.
-2. **VS Code local (validação do ambiente):** execute `system_health_check.py` para verificar uso de disco e listar arquivos grandes da pasta atual.
-3. **Notebook no Colab:** abra `demo.ipynb` e faça Upload to Colab de `hello_world.py` (teste Colab no VS Code) e `MCMV.png` (imagem local).
-4. **Linux/WSL (opcional e pedagógico):** use `setup_and_edit.sh` para praticar edição via terminal com `nano`, como parte do curso.
+2. **Validação local:** execute `system_health_check.py` no VS Code para verificar o ambiente.
+3. **Colab:** abra `demo.ipynb`, faça upload de `hello_world.py` e `MCMV.png` e execute as células em ordem.
+4. **Linux/WSL (opcional):** use `setup_and_edit.sh` para praticar edição no terminal com `nano`.
 
-## Checklist pre-commit do lab (Copilot Chat)
+---
 
-Use o prompt versionado em `.github/prompts/lab-precommit-checklist.prompt.md` para validar o notebook antes de commit e push.
+## Checklist pré-commit
 
-Como rodar no Copilot Chat (Agent):
-1. Abra o Copilot Chat no VS Code.
-2. Execute `/lab-precommit-checklist demo.ipynb`.
-3. Revise o resultado e atualize `demo.md` com o status final.
+Use o prompt em `.github/prompts/lab-precommit-checklist.prompt.md` para validar o notebook antes de commit.
 
-Critérios checados pelo prompt:
-- Convenção de idioma (identificadores/comentários em inglês; mensagens ao usuário podem ficar em PT-BR).
+No Copilot Chat (Agent mode):
+
+```
+/lab-precommit-checklist demo.ipynb
+```
+
+Critérios verificados:
+
+- Convenção de idioma: identificadores e comentários em inglês; mensagens ao usuário podem ficar em PT-BR.
 - Caminhos absolutos hardcoded.
 - Entradas essenciais no `.gitignore` (`.venv/`, `__pycache__/`, `*.pyc`).
 - Dependências externas refletidas em `requirements.txt`.
-
-Antes do commit final:
-1. Decida se as saídas do `demo.ipynb` devem permanecer versionadas.
-2. Trate ou justifique explicitamente o uso de `/etc/os-release` no contexto didático.
